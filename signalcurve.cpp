@@ -1992,7 +1992,7 @@ void SignalCurve::mouseReleaseEvent(QMouseEvent *release_event)
 
       mainwindow->statusLabel->setText(str);
 
-      snprintf(str, 512, ":TRIG:EDG:LEV %e", devparms->triggeredgelevel[devparms->triggeredgesource]);
+      snprintf(str, 512, ":TRIGger:EDGE:LEVel %e", devparms->triggeredgelevel[devparms->triggeredgesource]);
 
       mainwindow->set_cue_cmd(str);
 

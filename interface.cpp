@@ -4143,7 +4143,7 @@ void UI_Mainwindow::trigAdjustDialClicked(QPoint)
 
   statusLabel->setText(str);
 
-  snprintf(str, 512, ":TRIG:EDG:LEV %e", devparms.triggeredgelevel[devparms.triggeredgesource]);
+  snprintf(str, 512, ":TRIGger:EDGE:LEVel %e", devparms.triggeredgelevel[devparms.triggeredgesource]);
 
   set_cue_cmd(str);
 }
@@ -4155,7 +4155,11 @@ void UI_Mainwindow::toggle_fft()
   {
     devparms.math_fft = 0;
 
-    if(devparms.modelserie != 1)
+    if(devparms.modelserie == 7)
+    {
+      set_cue_cmd(":MATH1:DISP OFF");
+    }
+    else if(devparms.modelserie != 1)
     {
       set_cue_cmd(":CALC:MODE OFF");
     }
@@ -4168,7 +4172,13 @@ void UI_Mainwindow::toggle_fft()
   }
   else
   {
-    if(devparms.modelserie != 1)
+    if(devparms.modelserie == 7)
+    {
+      set_cue_cmd(":MATH:OPER FFT");
+
+      set_cue_cmd(":MATH1:DISP ON");
+    }
+    else if(devparms.modelserie != 1)
     {
       set_cue_cmd(":CALC:MODE FFT");
     }

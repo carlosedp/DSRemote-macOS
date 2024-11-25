@@ -498,7 +498,7 @@ void screen_thread::run()
     {
       usleep(TMC_GDS_DELAY);
 
-      if(tmc_write(":TRIG:EDG:LEV?") != 14)
+      if(tmc_write(":TRIGger:EDGE:LEVel?") != 20)
       {
         printf("Can not write to device.\n");
         line = __LINE__;
@@ -561,11 +561,21 @@ void screen_thread::run()
     {
       if((!strncmp(deviceparms->cmd_cue[params.cmd_cue_idx_out], ":TIM:SCAL ", 10)) ||
          (!strncmp(deviceparms->cmd_cue[params.cmd_cue_idx_out], ":MATH:OPER FFT", 14)) ||
+         (!strncmp(deviceparms->cmd_cue[params.cmd_cue_idx_out], ":MATH1:OPER FFT", 15)) ||
          (!strncmp(deviceparms->cmd_cue[params.cmd_cue_idx_out], ":CALC:MODE FFT", 14)))
       {
         usleep(TMC_GDS_DELAY * 10);
 
-        if(params.modelserie != 1)
+        if(params.modelserie == 7)
+        {
+          if(tmc_write(":MATH1:FFT:HSC?") != 15)
+          {
+            printf("Can not write to device.\n");
+            line = __LINE__;
+            goto OUT_ERROR;
+          }
+        }
+        else if(params.modelserie != 1)
         {
           if(tmc_write(":CALC:FFT:HSP?") != 14)
           {
@@ -594,7 +604,16 @@ void screen_thread::run()
 
         usleep(TMC_GDS_DELAY);
 
-        if(params.modelserie != 1)
+        if(params.modelserie == 7)
+        {
+          if(tmc_write(":MATH1:FFT:HCEN?") != 16)
+          {
+            printf("Can not write to device.\n");
+            line = __LINE__;
+            goto OUT_ERROR;
+          }
+        }
+        else if(params.modelserie != 1)
         {
           if(tmc_write(":CALC:FFT:HCEN?") != 15)
           {
