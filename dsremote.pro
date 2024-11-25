@@ -11,14 +11,26 @@ contains(QT_MINOR_VERSION, 7) {
 }
 
 
+contains(QT_MAJOR_VERSION, 4) {
+
+LIST = 0 1 2 3 4 5 6 7
+for(a, LIST):contains(QT_MINOR_VERSION, $$a):error("This project needs Qt4 version >= 4.8.7 or Qt5 version >= 5.12.6 or Qt6 version >= 6.4.2")
+
+contains(QT_MINOR_VERSION, 8) {
+  LIST = 0 1 2 3 4 5 6
+  for(a, LIST):contains(QT_PATCH_VERSION, $$a):error("This project needs Qt4 version >= 4.8.7 or Qt5 version >= 5.12.6 or Qt6 version >= 6.4.2")
+}
+}
+
+
 contains(QT_MAJOR_VERSION, 5) {
 
-LIST = 0 1 2 3 4 5 6 7 8
-for(a, LIST):contains(QT_MINOR_VERSION, $$a):error("This project needs Qt4 version >= 4.7.1 or Qt5 version >= 5.9.1 or Qt6 version >= 6.4.1")
+LIST = 0 1 2 3 4 5 6 7 8 9 10 11
+for(a, LIST):contains(QT_MINOR_VERSION, $$a):error("This project needs Qt4 version >= 4.8.7 or Qt5 version >= 5.12.6 or Qt6 version >= 6.4.2")
 
-contains(QT_MINOR_VERSION, 9) {
-  LIST = 0
-  for(a, LIST):contains(QT_PATCH_VERSION, $$a):error("This project needs Qt4 version >= 4.7.1 or Qt5 version >= 5.9.1 or Qt6 version >= 6.4.1")
+contains(QT_MINOR_VERSION, 12) {
+  LIST = 0 1 2 3 4 5
+  for(a, LIST):contains(QT_PATCH_VERSION, $$a):error("This project needs Qt4 version >= 4.8.7 or Qt5 version >= 5.12.6 or Qt6 version >= 6.4.2")
 }
 }
 
@@ -26,17 +38,17 @@ contains(QT_MINOR_VERSION, 9) {
 contains(QT_MAJOR_VERSION, 6) {
 
 LIST = 0 1 2 3
-for(a, LIST):contains(QT_MINOR_VERSION, $$a):error("This project needs Qt4 version >= 4.7.1 or Qt5 version >= 5.9.1 or Qt6 version >= 6.4.1")
+for(a, LIST):contains(QT_MINOR_VERSION, $$a):error("This project needs Qt4 version >= 4.8.7 or Qt5 version >= 5.12.6 or Qt6 version >= 6.4.2")
 
 contains(QT_MINOR_VERSION, 4) {
-  LIST = 0
-  for(a, LIST):contains(QT_PATCH_VERSION, $$a):error("This project needs Qt4 version >= 4.7.1 or Qt5 version >= 5.9.1 or Qt6 version >= 6.4.1")
+  LIST = 0 1
+  for(a, LIST):contains(QT_PATCH_VERSION, $$a):error("This project needs Qt4 version >= 4.8.7 or Qt5 version >= 5.12.6 or Qt6 version >= 6.4.2")
 }
 }
 
 
 TEMPLATE = app
-TARGET = dsremote
+TARGET = DSRemote
 DEPENDPATH += .
 INCLUDEPATH += .
 CONFIG += qt
@@ -44,13 +56,19 @@ CONFIG += warn_on
 CONFIG += release
 CONFIG += static
 CONFIG += largefile
-
-QT += widgets
 QT += network
 
-QMAKE_CXXFLAGS += -Wextra -Wshadow -Wformat -Wformat-nonliteral -Wformat-security -Wtype-limits -Wfatal-errors -Wdeprecated-declarations
+contains(QT_MAJOR_VERSION, 6) {
+QT += widgets
+}
 
-QMAKE_CFLAGS += -Wall -Wextra -Wshadow -Wformat-nonliteral -Wformat-security -Wtype-limits -Wfatal-errors -D_LARGEFILE64_SOURCE -D_LARGEFILE_SOURCE
+contains(QT_MAJOR_VERSION, 5) {
+QT += widgets
+}
+
+QMAKE_CFLAGS += -Wall -Wextra -Wshadow -Wformat-nonliteral -Wformat-security -Wtype-limits -Wfatal-errors -Wdeprecated-declarations -D_LARGEFILE64_SOURCE -D_LARGEFILE_SOURCE -U_FORTIFY_SOURCE
+
+QMAKE_CXXFLAGS += -Wextra -Wshadow -Wformat -Wformat-nonliteral -Wformat-security -Wtype-limits -Wfatal-errors -Wdeprecated-declarations -U_FORTIFY_SOURCE
 
 OBJECTS_DIR = ./objects
 MOC_DIR = ./moc
@@ -116,6 +134,8 @@ target.path = /usr/bin
 target.files = dsremote
 INSTALLS += target
 
+ICON = Rigol.icns
+
 icon_a.path = /usr/share/icons
 icon_a.files = images/r_dsremote.png
 INSTALLS += icon_a
@@ -139,5 +159,3 @@ INSTALLS += desktop_link
 udev_rule.path += /etc/udev/rules.d
 udev_rule.files += install/30-usbtmc.rules
 INSTALLS += udev_rule
-
-
