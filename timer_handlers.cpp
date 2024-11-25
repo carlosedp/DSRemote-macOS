@@ -164,7 +164,7 @@ void UI_Mainwindow::trigAdjDial_timer_handler()
     return;
   }
 
-  snprintf(str, 512, ":TRIG:EDG:LEV %e", devparms.triggeredgelevel[chn]);
+  snprintf(str, 512, ":TRIGger:EDGE:LEVel %e", devparms.triggeredgelevel[chn]);
 
   set_cue_cmd(str);
 }
