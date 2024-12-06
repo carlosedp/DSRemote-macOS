@@ -1120,7 +1120,7 @@ void UI_Mainwindow::get_device_model(const char *str) {
         devparms.vertdivisions = 8;
     }
 
-    if (!strcmp(str, "DHO804") || !strcmp(str, "DHO814") || !strcmp(str, "DHO914") || !strcmp(str, "DHO924") || !strcmp(str, "DHO914S") || !strcmp(str, "DHO924S")) {
+    if (!strcmp(str, "DHO804") || !strcmp(str, "DHO814") || !strcmp(str, "DHO824") || !strcmp(str, "DHO914") || !strcmp(str, "DHO924") || !strcmp(str, "DHO914S") || !strcmp(str, "DHO924S")) {
         devparms.channel_cnt = 4;
 
         devparms.bandwidth = 625;

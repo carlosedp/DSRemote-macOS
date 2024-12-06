@@ -36,7 +36,11 @@
 #include "tmc_dev.h"
 #include "utils.h"
 
-
+#ifdef __linux__
+#include <linux/usb/tmc.h>
+#else
+#include <tmc.h>
+#endif
 
 #define MAX_CMD_LEN     (255)
 #define MAX_RESP_LEN    (1024 * 1024 * 2)
@@ -299,27 +303,3 @@ int tmcdev_read(struct tmcdev *dev)
 
   return dev->sz;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
